@@ -6,7 +6,10 @@ import {
 
 class CategoryRepository implements ICategoriesRepository {
     private categories: Array<Category> = [];
-    constructor() {
+
+    // eslint-disable-next-line no-use-before-define
+    private static INSTANCE: CategoryRepository;
+    private constructor() {
         this.categories = [];
     }
 
@@ -18,6 +21,13 @@ class CategoryRepository implements ICategoriesRepository {
             created_at: new Date(),
         });
         this.categories.push(category);
+    }
+
+    public static getInstance(): CategoryRepository {
+        if (!CategoryRepository.INSTANCE) {
+            CategoryRepository.INSTANCE = new CategoryRepository();
+        }
+        return CategoryRepository.INSTANCE;
     }
 
     list(): Array<Category> {
